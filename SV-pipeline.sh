@@ -20,7 +20,7 @@ mkdir 1.pbmm2-cutesv2
 cd 1.pbmm2-cutesv2
 pbmm2 index ${ref} ${name}.mmi
 pbmm2 align --sort -j $threads ${name}.mmi ${reads} ${name}.bam
-samtools view -@ $threads -b -q 30 -F 1284 ${name}.bam -o ${name}.f.bam && \
+samtools view -@ $threads -b -q 20 -F 1284 ${name}.bam -o ${name}.f.bam && \
 samtools index -@ $threads ${name}.f.bam
 rm ${name}.bam
 mkdir work-place
@@ -35,7 +35,7 @@ mkdir 2.minimap2-sniffles2
 cd 2.minimap2-sniffles2
 minimap2 -t $threads -ax map-pb ${ref} ${reads} > ${name}.sam
 samtools sort -@ $threads -o ${name}.bam ${name}.sam
-samtools view -@ $threads -b -q 30 -F 1284 ${name}.bam -o ${name}.f.bam && \
+samtools view -@ $threads -b -q 20 -F 1284 ${name}.bam -o ${name}.f.bam && \
 samtools index -@ $threads ${name}.f.bam
 rm ${name}.sam ${name}.bam
 sniffles --input ${name}.f.bam --vcf ${name}.vcf --reference ${ref} -t 1
@@ -47,7 +47,7 @@ cd 3.ngmlr-svim
 ngmlr -r ${ref} -q ${reads} -o ${name}.sam -t ${threads} -x pacbio --bam-fix -i 0.85 -R 0.5
 sambamba view -S -f bam -t $threads -o ${name}.bam ${name}.sam
 sambamba sort -t $threads -o ${name}.s.bam ${name}.bam
-samtools view -@ $threads -b -q 30 -F 1284 ${name}.s.bam -o ${name}.f.bam
+samtools view -@ $threads -b -q 20 -F 1284 ${name}.s.bam -o ${name}.f.bam
 samtools index -@ $threads ${name}.f.bam
 rm ${name}.sam ${name}.bam
 mkdir work-place
@@ -60,7 +60,7 @@ mkdir 4.winnowmap-pbsv
 cd 4.winnowmap-pbsv
 winnowmap -x map-pb -a -Y -R $read_group -t $threads $ref $reads -o ${name}.sam
 samtools sort -@ $threads -o ${name}.bam ${name}.sam
-samtools view -@ $threads -b -q 30 -F 1284 ${name}.bam -o ${name}.f.bam
+samtools view -@ $threads -b -q 20 -F 1284 ${name}.bam -o ${name}.f.bam
 samtools index -@ $threads ${name}.f.bam
 rm ${name}.sam ${name}.bam
 pbsv discover ${name}.f.bam ${name}.svsig.gz
@@ -72,7 +72,7 @@ mkdir 5.minimap2-SVIM-asm
 cd 5.minimap2-SVIM-asm
 minimap2 -t $threads -ax map-pb ${ref} ${query} > ${name}.sam
 samtools sort -@ $threads -o ${name}.bam ${name}.sam
-samtools view -@ $threads -b -q 30 -F 1284 ${name}.bam -o ${name}.f.bam && \
+samtools view -@ $threads -b -q 20 -F 1284 ${name}.bam -o ${name}.f.bam && \
 samtools index -@ $threads ${name}.f.bam
 rm ${name}.sam ${name}.bam
 mkdir work-place
