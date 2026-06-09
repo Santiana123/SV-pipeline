@@ -15,6 +15,9 @@ query=$PBS_O_WORKDIR/
 reads=$PBS_O_WORKDIR/
 read_group="@RG\tID:${name}\tSM:${name}\tLB:${name}-lib\tPL:PACBIO"
 
+meryl count k=15 output merylDB ${ref}
+meryl print greater-than distinct=0.9998 merylDB > repetitive_k15.txt
+
 ###pbmm2-cutesv2 pipline
 mkdir 1.pbmm2-cutesv2
 cd 1.pbmm2-cutesv2
@@ -57,8 +60,8 @@ rm ${name}.f.bam
 cd ../
 ###winnowmap-pbsv pipline
 mkdir 4.winnowmap-pbsv
-cd 4.winnowmap-pbsv
-winnowmap -x map-pb -a -Y -R $read_group -t $threads $ref $reads -o ${name}.sam
+cd 4.winnowmap-pbsv 
+winnowmap -W repetitive_k15.txt -x map-pb -a -Y -R $read_group -t $threads $ref $reads -o ${name}.sam
 samtools sort -@ $threads -o ${name}.bam ${name}.sam
 samtools view -@ $threads -b -q 20 -F 1284 ${name}.bam -o ${name}.f.bam
 samtools index -@ $threads ${name}.f.bam
