@@ -90,7 +90,7 @@ nucmer -c 500 -l 100 --maxmatch ${ref} ${query} -p ${name}-SV
 delta-filter -m -i 90 -l 100 ./${name}-SV.delta > out.filtered.delta
 show-coords -THrd ./out.filtered.delta >./out.filtered.coords
 syri -c ./out.filtered.coords -d ./out.filtered.delta -r $ref -q $query
-awk -F'\t' '{if (length($4) > 50 || length($5) > 50) print $0;}' syri.vcf > ${name}.vcf
+awk -F'\t' '/^#/ {print; next} $3 !~ /AL/ && $3 !~ /HDR/ && $3 !~ /SYN/ && (length($4)>50 || length($5)>50 || $4=="N" || $4=="." || $5=="N" || $5==".") {print}' syri.vcf > ${name}.vcf
 cd ../
 ###SURVIVOR merge
 mkdir 7.merge
